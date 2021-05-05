@@ -1,7 +1,16 @@
-import { Column, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+    Column,
+    Entity,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn
+} from "typeorm";
 import { Node } from "./Node";
 import { User } from "./User";
 
+@Entity()
 export class Cluster {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
@@ -13,6 +22,7 @@ export class Cluster {
     owner!: User;
 
     @ManyToMany(() => User, (user) => user.memberedClusters)
+    @JoinTable()
     members!: User[];
 
     @OneToMany(() => Node, (node) => node.cluster)

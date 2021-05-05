@@ -1,6 +1,12 @@
-import { Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+    Column,
+    Entity,
+    ManyToOne,
+    PrimaryGeneratedColumn
+} from "typeorm";
 import { Cluster } from "./Cluster";
 
+@Entity()
 export class Node {
     @PrimaryGeneratedColumn("uuid")
     id!: string;

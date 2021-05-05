@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.SECRET_KEY as string;
+
 if (!SECRET_KEY) {
     throw new Error("SECRET_KEY must be provided as environmental variable");
 }
@@ -36,9 +37,7 @@ export class UserRepository extends Repository<User> {
         newUser.passwordHash = passwordHash;
         newUser.memberedClusters = [];
         newUser.jobs = [];
-        if (isAdmin) {
-            newUser.ownClusters = [];
-        }
+        newUser.ownClusters = [];
     
         await this.save(newUser);
 

@@ -1,4 +1,9 @@
-import { Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+    Column,
+    Entity,
+    ManyToOne,
+    PrimaryGeneratedColumn
+} from "typeorm";
 import { User } from "./User";
 
 export enum JobStatus {
@@ -7,6 +12,7 @@ export enum JobStatus {
     FAILED = "failed"
 }
 
+@Entity()
 export class Job {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
@@ -14,7 +20,7 @@ export class Job {
     @ManyToOne(() => User, (user) => user.jobs)
     author!: User;
 
-    @Column({ type: "string" })
+    @Column({ type: "text" })
     status!: JobStatus;
 
     @Column({ nullable: true })

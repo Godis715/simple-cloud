@@ -22,11 +22,11 @@ export class User {
     @Column()
     isAdmin!: boolean
 
-    @OneToMany(() => Cluster, (cluster) => cluster.owner, { nullable: true })
-    ownClusters?: Cluster[];
+    @OneToMany(() => Cluster, (cluster) => cluster.owner)
+    ownClusters!: Cluster[];
 
-    @ManyToMany(() => Cluster, (cluster) => cluster.members, { nullable: true })
-    memberedClusters?: Cluster[];
+    @ManyToMany(() => Cluster, (cluster) => cluster.members)
+    memberedClusters!: Cluster[];
 
     @OneToMany(() => Job, (job) => job.author)
     jobs!: Job[];

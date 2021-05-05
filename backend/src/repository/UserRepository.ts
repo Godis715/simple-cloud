@@ -2,12 +2,7 @@ import { EntityRepository, Repository } from "typeorm";
 import { User } from "../entity/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-const SECRET_KEY = process.env.SECRET_KEY as string;
-
-if (!SECRET_KEY) {
-    throw new Error("SECRET_KEY must be provided as environmental variable");
-}
+import { SECRET_KEY } from "../config";
 
 const SALT_ROUNDS = 10;
 const ACCESS_EXPIRED_IN = "1h";

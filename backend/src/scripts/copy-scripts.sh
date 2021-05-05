@@ -1,3 +1,5 @@
+set -e
+
 username=$1
 host=$2
 port=$3

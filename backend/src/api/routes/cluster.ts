@@ -1,5 +1,7 @@
 import express, { response } from "express";
 import { getRepository } from "typeorm";
+import { SSH_PRIVATE_KEY_PATH } from "../../config";
+import { copyScripts } from "../../core/copyScripts";
 import { Cluster } from "../../entity/Cluster";
 import { Node } from "../../entity/Node";
 import { User } from "../../entity/User";
@@ -161,10 +163,27 @@ clusterRouter.post<ClusterParams, GetNodeResponseBody, AppendNodeRequestBody>("/
         return;
     }
 
+    const {
+        host,
+        username,
+        port
+    } = request.body;
+
+    // init node
+
+    try {
+        await copyScripts(username, host, port, SSH_PRIVATE_KEY_PATH);
+    }
+    catch (err) {
+        console.error("[Server::appendNode::error", err);
+        response.sendStatus(400);
+        return;
+    }
+
     const node = new Node();
-    node.host = request.body.host;
-    node.username = request.body.username;
-    node.port = request.body.port;
+    node.host = host;
+    node.username = username;
+    node.port = port;
     node.cluster = cluster;
 
     cluster.nodes.push(node);

@@ -1,0 +1,22 @@
+.AuthPage {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: whitesmoke;
+
+    &-AuthPanel {
+        margin-top: 20vh;
+        display: flex;
+        flex-direction: column;
+        width: 20em;
+        border-radius: 8px;
+        background-color: white;
+        padding: 48px 24px;
+        text-align: center;
+    }
+
+    &-Login.MuiTextField-root, &-Password.MuiTextField-root {
+        margin-bottom: 18px;
+    }
+}

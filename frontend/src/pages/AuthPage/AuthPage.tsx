@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField/TextField";
-import { login as apiLogin } from "../remote/auth";
+import { login as apiLogin } from "../../remote/auth";
 import Button from "@material-ui/core/Button/Button";
 import "./AuthPage.scss";
 import Typography from "@material-ui/core/Typography";

@@ -1,0 +1,10 @@
+.App {
+    .MuiPaper-root {
+        width: 256px;
+        padding-top: 48px;
+    }
+
+    &-Title.MuiTypography-root {
+        margin: 16px;
+    }
+}

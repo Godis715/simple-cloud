@@ -1,20 +1,19 @@
 import { resolve } from "path";
 import { dockerToSingularity } from "./dockerToSingularity";
 import { v4 as uuidv4 } from "uuid";
-import { Client } from "ssh2";
+import { Client, ClientChannel } from "ssh2";
 import { sendSingularityImage } from "./sendSingularityImage";
 import { ensureSingularity } from "./ensureSingularity";
 import { readFileSync } from "fs";
-import { Stream } from "stream";
 import { runSingularityImage } from "./runSingularityImage";
 
-export default async function rumRemoteJob(
+export default async function runRemoteJob(
     username: string,
     host: string,
     port: number,
     keyPath: string,
     dirPath: string
-): Promise<Stream> {
+): Promise<ClientChannel> {
     console.log("[rumRemoteJob]: Started");
     console.log("[rumRemoteJob]: username: ", username);
     console.log("[rumRemoteJob]: host: ", host);

@@ -1,8 +1,5 @@
 import "reflect-metadata";
-
-import { resolve } from "path";
-import runRemoteJob from "./core/runRemoteJob";
-import "./api/app";
+import "./api";
 
 // runRemoteJob(
 //     "root",

@@ -1,0 +1,32 @@
+.JobPage {
+    height: calc(100vh - 128px);
+    margin: 0 384px;
+    padding: 64px;
+    background-color: white;
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+
+    &-TerminalContainer {
+        height: 20em;
+        overflow: auto;
+        display: flex;
+        flex-direction: column-reverse;
+        margin-top: 32px;
+
+        .Terminal {
+            flex-grow: 1;
+        }
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: black;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: lightgray;
+        }
+    }
+}

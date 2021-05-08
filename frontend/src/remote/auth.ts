@@ -13,3 +13,7 @@ export async function login(login: string, password: string): Promise<void> {
 export async function verifyToken(): Promise<void> {
     await axiosInst.get("/auth/verify-token");
 }
+
+export async function logout(): Promise<void> {
+    await axiosInst.get("/auth/logout");
+}

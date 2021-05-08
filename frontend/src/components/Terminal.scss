@@ -1,0 +1,12 @@
+.Terminal {
+    background-color: black;
+    padding: 1ch 2ch;
+    
+    &-Content {
+        color: lightgray;
+        font-family: monospace;
+        font-size: 16px;
+        font-weight: 600;
+        white-space: pre;
+    }
+}

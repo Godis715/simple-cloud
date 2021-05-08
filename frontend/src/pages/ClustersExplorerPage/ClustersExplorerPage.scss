@@ -1,4 +1,4 @@
-.JobsExplorerPage {
+.ClustersExplorerPage {
     height: calc(100vh - 128px);
     margin: 0 384px;
     padding: 64px;
@@ -14,12 +14,7 @@
         width: 100%;
     }
 
-    &-UploadDockerfile.MuiListItem-root {
-        display: grid;
-        grid-template-columns: auto auto 1fr auto;
-        align-items: center;
-        gap: 16px;
-        width: 100%;
+    &-ListItem.MuiListItem-root:first-child {
         border-bottom-width: 3px;
     }
 }

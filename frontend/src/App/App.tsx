@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography/Typography';
 import React, { useEffect, useState } from 'react';
 import { Switch, Route, Redirect, useHistory } from "react-router-dom";
-import { verifyToken } from '../remote/auth';
+import { logout, verifyToken } from '../remote/auth';
 import AuthPage from '../pages/AuthPage/AuthPage';
 import JobsExplorerPage from '../pages/JobsExplorerPage/JobsExplorerPage';
 import Drawer from '@material-ui/core/Drawer';
@@ -9,6 +9,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import './App.scss';
+import Terminal from '../components/Terminal';
+import JobPage from '../pages/JobPage/JobPage';
+import ClustersExplorerPage from '../pages/ClustersExplorerPage/ClustersExplorerPage';
 
 function App() {
     const [isAuth, setIsAuth] = useState<boolean | null>(null);
@@ -24,7 +27,7 @@ function App() {
         return (
             <Switch>
                 <Route exact path="/cluster">
-                    <div>Обзор кластеров</div>
+                    <ClustersExplorerPage />
                 </Route>
                 <Route exact path="/cluster/:clusterId">
                     <div>Настройка кластера</div>
@@ -33,7 +36,7 @@ function App() {
                     <JobsExplorerPage />
                 </Route>
                 <Route exact path="/job/:jobId">
-                    <div>Просмотр результата выполнения задачи</div>
+                    <JobPage />
                 </Route>
                 <Route path="*">
                     <Redirect to="/job" />
@@ -59,7 +62,9 @@ function App() {
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button>
+                    <ListItem button onClick={() => {
+                        logout().then(() => setIsAuth(false));
+                    }}>
                         <Typography>Выход</Typography>
                     </ListItem>
                 </List>

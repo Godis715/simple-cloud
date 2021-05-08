@@ -6,6 +6,7 @@ import clusterRouter from "./routes/cluster";
 import withUser from "./middlewares/withUser";
 import fileUpload from "express-fileupload";
 import jobRouter from "./routes/job";
+import { ORIGIN } from "../config";
 
 const app = express()
     // чтобы работать с телом запроса
@@ -16,7 +17,7 @@ const app = express()
     .use(cookieParser())
     .use(fileUpload())
     .use(cors({
-        origin: "*",
+        origin: [ORIGIN],
         credentials: true,
         exposedHeaders: ["Content-Disposition"]
     }));

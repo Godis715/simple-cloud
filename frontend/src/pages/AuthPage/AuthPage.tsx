@@ -31,13 +31,13 @@ export default function AuthPage(props: Props): JSX.Element {
         <div className="AuthPage">
             <div className="AuthPage-AuthPanel">
                 <Typography variant="h4" gutterBottom>Simple Cloud</Typography>
-                <Typography fontSize={18} gutterBottom>Войдите в систему</Typography>
+                <Typography fontSize={18} gutterBottom>Enter the system</Typography>
 
                 <TextField
                     className="AuthPage-Login"
                     id="login"
                     size="small"
-                    label="Логин"
+                    label="Username"
                     value={login}
                     onChange={(ev) => setLogin(ev.target.value)}
                 />
@@ -45,7 +45,7 @@ export default function AuthPage(props: Props): JSX.Element {
                     className="AuthPage-Password"
                     id="password"
                     size="small"
-                    label="Пароль"
+                    label="Password"
                     type="password"
                     value={password}
                     onChange={(ev) => setPassword(ev.target.value)}
@@ -57,7 +57,7 @@ export default function AuthPage(props: Props): JSX.Element {
                     disabled={!login || !password}
                     className="AuthPage-Submit"
                 >
-                    Войти
+                    Login
                 </Button>
             </div>
         </div>

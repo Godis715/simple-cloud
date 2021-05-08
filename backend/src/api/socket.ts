@@ -4,8 +4,15 @@ import cookie from "cookie";
 import { UserRepository } from "../repository/UserRepository";
 import { handleSubscribeJobOutput, handleUnsubscribeJobOutput } from "./listeners/job";
 import server from "./server";
+import { ORIGIN } from "../config";
 
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: ORIGIN,
+        methods: ["GET", "POST"],
+        credentials: true
+    }
+});
 
 io.on("connection", async (socket) => {
     const cookies = socket.handshake.headers.cookie

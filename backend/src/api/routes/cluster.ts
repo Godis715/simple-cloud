@@ -50,7 +50,7 @@ type GetClusterResponseBody = {
 }[];
 
 clusterRouter.get<never, GetClusterResponseBody>("/own", async (
-    request,
+    _,
     response
 ) => {
     const user = response.locals.user as User;
@@ -86,7 +86,7 @@ clusterRouter.get<never, GetClusterResponseBody>("/own", async (
 });
 
 clusterRouter.get<never, GetClusterResponseBody>("/membered", async (
-    request,
+    _,
     response
 ) => {
     const user = response.locals.user as User;
@@ -209,7 +209,19 @@ clusterRouter.post<ClusterParams, GetNodeResponseBody, AppendNodeRequestBody>("/
     }
 });
 
-clusterRouter.get<ClusterParams, GetNodeResponseBody>("/:clusterId/node", async (
+type GetClusterDetailsResponseBody = {
+    id: string,
+    name: string,
+    members: string[],
+    nodes: {
+        id: string,
+        host: string,
+        username: string,
+        port: number
+    }[]
+};
+
+clusterRouter.get<ClusterParams, GetClusterDetailsResponseBody>("/:clusterId", async (
     request,
     response
 ) => {
@@ -223,7 +235,7 @@ clusterRouter.get<ClusterParams, GetNodeResponseBody>("/:clusterId/node", async 
     const clusterRepository = getRepository(Cluster);
 
     const cluster = await clusterRepository.findOne(clusterId, {
-        relations: ["nodes", "owner"]
+        relations: ["nodes", "owner", "members"]
     });
 
     if (!cluster) {
@@ -244,8 +256,54 @@ clusterRouter.get<ClusterParams, GetNodeResponseBody>("/:clusterId/node", async 
                 username: n.username,
                 host: n.host,
                 port: n.port
-            }))
+            })),
+            members: cluster.members
+                .map((m) => m.login),
+            id: cluster.id,
+            name: cluster.name
         });
+});
+
+type PutMemberParams = { login: string } & ClusterParams;
+
+clusterRouter.put<PutMemberParams, string[]>("/:clusterId/member/:login", async (
+    request,
+    response
+) => {
+    const { clusterId, login } = request.params;
+    const user = response.locals.user as User;
+    if (!user?.isAdmin) {
+        response.sendStatus(403);
+        return;
+    }
+
+    const clusterRepository = getRepository(Cluster);
+
+    const cluster = await clusterRepository.findOne(clusterId, {
+        relations: ["members", "owner"]
+    });
+
+    if (!cluster) {
+        response.sendStatus(404);
+        return;
+    }
+
+    if (user.id !== cluster.owner.id) {
+        response.sendStatus(403);
+        return;
+    }
+    
+    const newMember = await getRepository(User).findOne({ login });
+    if (!newMember) {
+        response.sendStatus(404);
+        return;
+    }
+
+    cluster.members.push(newMember);
+
+    await clusterRepository.save(cluster);
+    
+    response.sendStatus(200);
 });
 
 export default clusterRouter;

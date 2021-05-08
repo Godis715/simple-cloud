@@ -19,10 +19,6 @@ export type NodeResp = {
     username: string
 };
 
-export async function fetchClusterNodes(clusterId: string): Promise<NodeResp[]> {
-    return (await axiosInst.get<NodeResp[]>(`/cluster/${clusterId}/node`)).data;
-}
-
 export type AppendNodeResponse = {
     nodes: NodeResp[]
 };
@@ -35,9 +31,20 @@ export async function appendNode(clusterId: string, node: NodeResp): Promise<App
 }
 
 export async function appendUser(clusterId: string, login: string): Promise<void> {
-    await axiosInst.put(`/cluster/${clusterId}/member`, { params: { login } });
+    await axiosInst.put(`/cluster/${clusterId}/member/${login}`);
 }
 
-export async function fetchClusterMembers(clusterId: string): Promise<string[]> {
-    return (await axiosInst.get(`/cluster/${clusterId}/member`)).data;
+export type ClusterResp = {
+    id: string,
+    name: string,
+    members: string[],
+    nodes: NodeResp[]
+}
+
+export async function fetchCluster(clusterId: string): Promise<ClusterResp> {
+    return (await axiosInst.get<ClusterResp>(`/cluster/${clusterId}`)).data;
+}
+
+export async function createCluster(clusterName: string): Promise<string> {
+    return (await axiosInst.post<{ clusterId: string }>(`/cluster`, { name: clusterName })).data.clusterId;
 }

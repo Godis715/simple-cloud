@@ -15,14 +15,14 @@ import Input from "@material-ui/core/Input";
 
 function jobStatusToLabel(status: JobStatus): string {
     if (status === "in-process") {
-        return "В процессе";
+        return "In process";
     }
 
     if (status === "succeed") {
-        return "Завершено";
+        return "Completed";
     }
 
-    return "Ошибка";
+    return "Error";
 }
 
 function formatTime(date: Date): string {
@@ -72,11 +72,11 @@ export default function JobsExplorerPage(): JSX.Element {
     return (
         <div className="JobsExplorerPage">
             <Typography variant="h5" gutterBottom style={{ marginLeft: "16px" }}>
-                Список задач
+                Jobs
             </Typography>
             <List>
                 <ListItem divider className="JobsExplorerPage-UploadDockerfile">
-                    <Typography>Новая задача</Typography>
+                    <Typography>New job</Typography>
                     <Select
                         id="select-cluster"
                         onChange={(ev) => setCluster(ev.target.value)}
@@ -100,7 +100,7 @@ export default function JobsExplorerPage(): JSX.Element {
                             htmlFor="dockerfile-upload"
                             style={{ textTransform: "none" }}
                         >
-                            {file ? file.name : "ВЫБРАТЬ DOCKERFILE"}
+                            {file ? file.name : "CHOOSE DOCKERFILE"}
                         </Button>
                     </div>
                     <Button
@@ -108,7 +108,7 @@ export default function JobsExplorerPage(): JSX.Element {
                         disabled={!file || !cluster}
                         onClick={submitJob}
                     >
-                        Создать
+                        Submit
                     </Button>
                 </ListItem>
                 {jobs?.map((j) => (
@@ -123,7 +123,7 @@ export default function JobsExplorerPage(): JSX.Element {
                                 history.push(`/job/${j.id}`)
                             }}
                         >
-                            Открыть
+                            Open
                         </Button>
                     </ListItem>
                 ))}

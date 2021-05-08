@@ -60,4 +60,16 @@ authRouter.get<never, VerifyTokenResponseBody>("/verify-token", async (
     }
 });
 
+authRouter.get("/logout", async (
+    request,
+    response
+) => {
+    response
+        .cookie("access-token", "", {
+            maxAge: 0,
+            httpOnly: true
+        })
+        .sendStatus(200);
+});
+
 export default authRouter;

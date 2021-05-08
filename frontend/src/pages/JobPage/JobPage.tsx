@@ -38,7 +38,7 @@ export default function JobPage(): JSX.Element {
     return (
         <div className="JobPage">
             <Typography variant="h5" gutterBottom>
-                Вывод работы программы
+                Job's output
             </Typography>
             <div className="JobPage-TerminalContainer">
                 <Terminal stdout={job?.output || ""} />

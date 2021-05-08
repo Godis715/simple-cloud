@@ -1,0 +1,18 @@
+.ClusterPage {
+    height: calc(100vh - 128px);
+    margin: 0 384px;
+    padding: 64px;
+    background-color: white;
+    border-left: 1px solid rgba(0, 0, 0, 0.12);
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+
+    &-NewNode.MuiListItem-root {
+        display: grid;
+        grid-template-columns: repeat(5, auto);
+        gap: 16px;
+    }
+
+    &-AddMember.MuiButton-root {
+        margin-left: 16px;
+    }
+}

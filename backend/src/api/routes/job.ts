@@ -21,6 +21,12 @@ type PostJobResponseBody = {
     jobId: string
 };
 
+
+function handleOutput(output: string, jobId: string): void {
+    jobOutputStore.append(jobId, output);
+    io.to(`job:${jobId}`).emit("job-output", output);
+}
+
 jobRouter.post<never, PostJobResponseBody, never, PostJobQueryParams>("/", async (
     request,
     response
@@ -61,7 +67,7 @@ jobRouter.post<never, PostJobResponseBody, never, PostJobQueryParams>("/", async
 
     jobOutputStore.newJob(job.id);
 
-    const jobDirName = `${cluster.name}--${job.id}`;
+    const jobDirName = `${cluster.name.replace(/\s/g, "-")}--${job.id}`;
     const jobDirPath = resolve("data", jobDirName);
 
     await new Promise<void>((res, rej) => {
@@ -82,24 +88,18 @@ jobRouter.post<never, PostJobResponseBody, never, PostJobQueryParams>("/", async
         node.host,
         node.port,
         SSH_PRIVATE_KEY_PATH,
-        jobDirPath
+        jobDirPath,
+        (log) => handleOutput(log + "\n", job.id)
     ).then(
         (stream) => {
-            stream.stdout.on("data", (data: Buffer) => {
-                const str = data.toString();
-                jobOutputStore.append(job.id, str);
-                io.to(`job:${job.id}`).emit("job-output", str);
-            });
+            stream.stdout.on("data", (data: Buffer) => handleOutput(data.toString(), job.id));
 
-            stream.stderr.on("data", (data: Buffer) => {
-                const str = data.toString();
-                jobOutputStore.append(job.id, str);
-                io.to(`job:${job.id}`).emit("job-output", str);
-            });
+            stream.stderr.on("data", (data: Buffer) => handleOutput(data.toString(), job.id));
 
             stream.on("close", async () => {
                 job.status = JobStatus.SUCCEED;
                 job.output = jobOutputStore.getOutput(job.id);
+                handleOutput("================== JOB FINISHED ==================", job.id);
                 await jobRepository.save(job);
             });
         }
@@ -112,7 +112,12 @@ jobRouter.post<never, PostJobResponseBody, never, PostJobQueryParams>("/", async
         });
 });
 
-jobRouter.get<never, string[]>("/", async (_, response) => {
+type GetAllJobsResponseBody = {
+    id: string,
+    status: JobStatus
+}[];
+
+jobRouter.get<never, GetAllJobsResponseBody>("/", async (_, response) => {
     const user = response.locals.user as User;
 
     try {
@@ -127,7 +132,10 @@ jobRouter.get<never, string[]>("/", async (_, response) => {
 
         response
             .status(200)
-            .send(jobs.map((j) => j.id));
+            .send(jobs.map((j) => ({
+                id: j.id,
+                status: j.status
+            })));
     }
     catch (err) {
         console.error("[Server::getJobs::error", err);

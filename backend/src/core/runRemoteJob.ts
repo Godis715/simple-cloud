@@ -12,7 +12,8 @@ export default async function runRemoteJob(
     host: string,
     port: number,
     keyPath: string,
-    dirPath: string
+    dirPath: string,
+    handleStage: (stage: string) => void
 ): Promise<ClientChannel> {
     console.log("[rumRemoteJob]: Started");
     console.log("[rumRemoteJob]: username: ", username);
@@ -20,6 +21,8 @@ export default async function runRemoteJob(
     console.log("[rumRemoteJob]: port: ", port);
     console.log("[rumRemoteJob]: keyPath: ", keyPath);
     console.log("[rumRemoteJob]: dirPath: ", dirPath);
+
+    handleStage("1. Connecting to node...");
 
     try {
         // 0. connect to node
@@ -36,9 +39,12 @@ export default async function runRemoteJob(
                 });
         });
         console.log("[rumRemoteJob]: connected to node");
+        handleStage("Done!");
 
+        handleStage("2. Building docker image and converting it to singularity...");
         // 1. convert dockerfile to singulairty
         await dockerToSingularity(dirPath);
+        handleStage("Done!");
         console.log("[rumRemoteJob]: converted dockerfile to singularity");
 
         const singImagePath = resolve(dirPath, "image.sif")
@@ -47,6 +53,7 @@ export default async function runRemoteJob(
         const singUniqueName = `${uuidv4()}.sif`;
         console.log("[rumRemoteJob]: singularity unique name", singUniqueName);
 
+        handleStage("3. Sending singularity image to worker...")
         // 3. send singularity file
         await sendSingularityImage(
             username,
@@ -57,12 +64,16 @@ export default async function runRemoteJob(
             singUniqueName
         );
         console.log("[rumRemoteJob]: sent sibgularity file");
+        handleStage("Done!");
 
+        handleStage("4. Ensuring that singularity is installed...")
         // 4. ensure that singaulrity exists
         await ensureSingularity(conn);
         console.log("[rumRemoteJob]: eunsured that singularity installed");
+        handleStage("Done!");
 
         // 5. run singularity image
+        handleStage("===================== STARTING JOB =======================")
         const outputStream = await runSingularityImage(conn, `/tmp/${singUniqueName}`);
         console.log("[rumRemoteJob]: started singularity job");
 

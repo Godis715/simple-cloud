@@ -3,6 +3,7 @@ set -e
 # Creates image.sif in output folder: /tmp/output/image.sif
 
 image_uuid=$(uuidgen)
+context=$1
 dockerfile_path=$1/Dockerfile
 docker_output=$1/image.tar
 singularity_output=$1/image.sif

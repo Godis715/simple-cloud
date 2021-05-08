@@ -8,10 +8,10 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
-import './App.scss';
-import Terminal from '../components/Terminal';
 import JobPage from '../pages/JobPage/JobPage';
 import ClustersExplorerPage from '../pages/ClustersExplorerPage/ClustersExplorerPage';
+import ClusterPage from '../pages/ClusterPage/ClusterPage';
+import './App.scss';
 
 function App() {
     const [isAuth, setIsAuth] = useState<boolean | null>(null);
@@ -30,7 +30,7 @@ function App() {
                     <ClustersExplorerPage />
                 </Route>
                 <Route exact path="/cluster/:clusterId">
-                    <div>Настройка кластера</div>
+                    <ClusterPage />
                 </Route>
                 <Route exact path="/job">
                     <JobsExplorerPage />
@@ -54,10 +54,10 @@ function App() {
                 <Divider />
                 <List>
                     <ListItem button onClick={() => history.push("/cluster")}>
-                        <Typography>Кластеры</Typography>
+                        <Typography>Clusters</Typography>
                     </ListItem>
                     <ListItem button onClick={() => history.push("/job")}>
-                        <Typography>Задачи</Typography>
+                        <Typography>Jobs</Typography>
                     </ListItem>
                 </List>
                 <Divider />
@@ -65,7 +65,7 @@ function App() {
                     <ListItem button onClick={() => {
                         logout().then(() => setIsAuth(false));
                     }}>
-                        <Typography>Выход</Typography>
+                        <Typography>Log out</Typography>
                     </ListItem>
                 </List>
             </Drawer>
@@ -80,7 +80,7 @@ function App() {
                 />
             )}
             {isAuth === null && (
-                <Typography>Загрузка...</Typography>
+                <Typography>Loading...</Typography>
             )}
             {isAuth && (
                 <>

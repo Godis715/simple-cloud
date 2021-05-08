@@ -1,5 +1,7 @@
 # Simple Cloud
 
+Application was developed within the Grid&Cloud technology course by a student of AMCP Faculty of SPbU
+
 ## Description
 
 Simple Cloud is a web-based application for running Docker-defined tasks on remote nodes. Application provides functionality for defining clusters (ony for admin) and jobs.

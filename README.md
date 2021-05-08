@@ -8,6 +8,8 @@ Simple Cloud is a web-based application for running Docker-defined tasks on remo
 
 ## How it works?
 
+![g c-diagram](https://user-images.githubusercontent.com/33070242/117547955-02b66900-b03b-11eb-927b-3657cff73510.png)
+
 Users can upload their jobs as Dockerfiles and choosing cluster, on which this task should be executed.
 
 Docker-defined tasks are built on the main host and converted to Singularity images. This Singularity images are transferred to worker-nodes via ssh as files and further executed there.

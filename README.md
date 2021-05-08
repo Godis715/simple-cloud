@@ -37,7 +37,7 @@ Backend:
 5. Set env variables:
    ```
    SECRET_KEY=<any random string>
-   SSH_PRIVATE_KEY=<path to ypur ssh private key>
+   SSH_PRIVATE_KEY=<path to your ssh private key>
    ORIGIN=http://localhost:3000
    ```
 6. Run backend as root (this is neccessary for accessing docker):
